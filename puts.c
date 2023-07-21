@@ -11,16 +11,27 @@ int _puts(const char *str)
 {
 	size_t writtenBytes;
 
-	if (str == 0 || *str = '\0')
+	if (str == 0 || *str == '\0')
 		return (-1);
 
 	writtenBytes = write(STDOUT_FILENO, str, _strlen(str));
 	if (writtenBytes < 0)
 	{
-		perror("Err");
+		perror("Error writing to standard output");
+		return (-1);
 	}
-	
-	if (write(STDOUT_FILENO, &str[i], 1) < 0)
-             return (EOF);
-     return (i);
+
+	if (writtenBytes < len)
+	{
+		perror("Error writing characters to standard output");
+		return (-1);
+	}
+
+	if (write(STDOUT_FILENO, "\n", 1) < 0)
+	{
+		perror("Error writing newline character to standard output");
+		return (-1);
+	}
+
+	return (writtenBytes + 1);
 }
