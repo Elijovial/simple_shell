@@ -14,12 +14,12 @@
 
 int main(void)
 {
-	char *input = NULL;
-	size_t n = 0;
-	char *args[MAX_LENGTH / 2 + 1];
-	int should_run = 1;
+	char *input = NULL, *args[MAX_LENGTH];
+	size_t n = 0, i = 0;
+	char *token = strtok(input, "\n\t\r ");
+	pid_t pid;
 
-	while (should_run)
+	while (1)
 	{
 		if (isatty(STDIN_FILENO) == 1)
 			printf("$ ");
@@ -31,16 +31,14 @@ int main(void)
 		}
 		if (strcmp(input, "exit") == 0)
 			break;
-		pid_t pid = fork();
+		pid = fork();
 		if (pid < 0)
 		{
 			fprintf(stderr, "Fork failed\n");
-			return 1;
+			return (1);
 		}
-		 else if (pid == 0)
+		else if (pid == 0)
 		{
-			char *token = strtok(input, "\n\t\r ");
-			int i = 0;
 			while (token != NULL)
 			{
 				args[i] = token;
@@ -50,7 +48,7 @@ int main(void)
 			args[i] = NULL;
 			execvp(args[0], args);
 			fprintf(stderr, "Exec failed\n");
-			return 1;
+			return (1);
 		}
 		else
 			wait(NULL);
