@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-
-#define MAX_LENGTH 1024
+#include "shell.h"
 
 /**
  * main - entry point for shell()
@@ -15,7 +9,7 @@
 int main(void)
 {
 	char *input = NULL, *args[MAX_LENGTH];
-	size_t n = 0, i = 0;
+	size_t input_size = 0, i = 0;
 	char *token = strtok(input, "\n\t\r ");
 	pid_t pid;
 
@@ -23,7 +17,7 @@ int main(void)
 	{
 		if (isatty(STDIN_FILENO) == 1)
 			printf("$ ");
-		if (getline(&input, &n, stdin) == -1)
+		if (getline(&input, &input_size, stdin) == -1)
 		{
 			if (isatty(STDIN_FILENO) == 1)
 				printf("\n");
@@ -38,7 +32,7 @@ int main(void)
 			return (1);
 		}
 		else if (pid == 0)
-		{
+		 {
 			while (token != NULL)
 			{
 				args[i] = token;
