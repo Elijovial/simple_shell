@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-
-#define MAX_LENGTH 1024
+#include "shell.h"
 
 /**
  * main - entry point for shell()
@@ -15,15 +9,19 @@
 int main(void)
 {
 	char *input = NULL, *args[MAX_LENGTH];
+<<<<<<< HEAD
 	size_t n = 0;
 	int result, i = 0;
+=======
+	size_t input_size = 0, i = 0;
+>>>>>>> 33eca896bce497641a43140351fb2f6f1aa6de07
 	pid_t pid;
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO) == 1)
 			printf("$ ");
-		if (getline(&input, &n, stdin) == -1)
+		if (getline(&input, &input_size, stdin) == -1)
 		{
 			if (isatty(STDIN_FILENO) == 1)
 				printf("\n");
@@ -38,8 +36,14 @@ int main(void)
 			return (1);
 		}
 		else if (pid == 0)
+<<<<<<< HEAD
 		{
 			char *token = strtok(input, "\n\t\r ");
+=======
+		 {
+			char *token = strtok(input, "\n\t\r ");
+
+>>>>>>> 33eca896bce497641a43140351fb2f6f1aa6de07
 			while (token != NULL)
 			{
 				args[i] = token;
