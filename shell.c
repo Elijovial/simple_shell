@@ -10,7 +10,6 @@ int main(void)
 {
 	char *input = NULL, *args[MAX_LENGTH];
 	size_t input_size = 0, i = 0;
-	char *token = strtok(input, "\n\t\r ");
 	pid_t pid;
 
 	while (1)
@@ -33,6 +32,8 @@ int main(void)
 		}
 		else if (pid == 0)
 		 {
+			char *token = strtok(input, "\n\t\r ");
+
 			while (token != NULL)
 			{
 				args[i] = token;
