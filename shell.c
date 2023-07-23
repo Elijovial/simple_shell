@@ -8,7 +8,8 @@
 int main(void)
 {
 	char *input = NULL, *args[MAX_LENGTH];
-	size_t n = 0, i = 0;
+	size_t n = 0;
+	int result, i = 0;
 	pid_t pid;
 
 	while (1)
@@ -41,7 +42,17 @@ int main(void)
 			}
 			args[i] = NULL;
 			execvp(args[0], args);
-			fprintf(stderr, "Exec failed\n");
+			result = strcmp(input, "$?");
+			if (result == 0)
+			{
+				fprintf(stderr, "%s: %d: 0: not found\n", getenv("_"), i);
+			}
+			else if (result == -1 && result == 1)
+			{
+				fprintf(stderr, "%s: %d: %d: %s: not found\n", getenv("_"), i, WEXITSTATUS(system(args[0])), args[0]);
+			}
+			else
+				fprintf(stderr,  "%s: %d: %s: not found\n", getenv("_"), i, args[0]);
 			return (1);
 		}
 		else
