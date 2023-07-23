@@ -13,7 +13,7 @@ int main(void)
 	size_t n = 0;
 	int result, i = 0;
 =======
-	size_t input_size = 0, i = 0;
+	size_t input_size = 0;
 >>>>>>> 33eca896bce497641a43140351fb2f6f1aa6de07
 	pid_t pid;
 

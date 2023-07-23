@@ -53,7 +53,6 @@ int main(void)
 				i++;
 				token = strtok(NULL, "\n\t\r ");
 			}
-
 			args[i] = NULL;
 
 			execvp(args[0], args);
