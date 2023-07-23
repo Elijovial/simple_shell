@@ -1,7 +1,8 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef SHELL_H
+#define SHELL_H
 
 #include <stdio.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -9,6 +10,8 @@
 
 #define MAX_LENGTH 1024
 
+int _print(const char *str);
+size_t _strlen(const char *str);
 
 #endif
 
