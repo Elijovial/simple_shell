@@ -13,6 +13,7 @@
  */
 int execute_command(char *args[])
 {
+	int j = 0;
 	pid_t pid = fork();
 
 	if (pid < 0)
@@ -22,9 +23,14 @@ int execute_command(char *args[])
 	}
 	else if (pid == 0)
 	{
-		execvp(args[0], args);
-		fprintf(stderr, "%s: command not found\n", args[0]);
-		exit(EXIT_FAILURE);
+
+		while(j >= 0)
+		{
+			j++;
+			execvp(args[0], args);
+			fprintf(stderr, "%s: %d: %s: not found\n", getenv("_"), j, args[0]);
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 		wait(NULL);
@@ -120,6 +126,7 @@ int main(void)
 		{
 			if (isatty(STDIN_FILENO) == 1)
 				printf("\n");
+		
 			free(input);
 			exit(0);
 		}
