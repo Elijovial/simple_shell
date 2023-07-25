@@ -73,12 +73,12 @@ void handle_cd(char *args[], const char *shell_name, int command_count)
 }
 
 /**
- * search_and_execute_command - function to search and execute command in PATH
+ * search_n_exec_cmd - function to search and execute command in PATH
  * @args: array of arguments for the command
  * @shell_name: the name of the shell (e.g., "sh")
  * @command_count: the count of commands entered since shell execution
  */
-void search_and_execute_command(char *args[], const char *shell_name, int command_count)
+void search_n_exec_cmd(char *args[], const char *shell_name, int command_count)
 {
 	char path[MAX_LENGTH], full_path[MAX_LENGTH];
 	char *path_token, *path_env;
@@ -154,7 +154,7 @@ int main(void)
 		}
 
 		if (strchr(args[0], '/') == NULL)
-			search_and_execute_command(args, shell_name, command_count);
+			search_n_exec_cmd(args, shell_name, command_count);
 		else
 			execute_command(args, shell_name, command_count);
 	}
