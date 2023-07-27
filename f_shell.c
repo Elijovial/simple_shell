@@ -9,9 +9,16 @@
  */
 int execute_command(char *args[], const char *shell_name, int command_count)
 {
-	pid_t pid = fork();
+	pid_t pid;
 	int status;
 
+	if (access(args[0], F_OK != 0))
+	{
+		fprintf(stderr, "%s: %d: %s: not found\n",
+				shell_name, command_count, args[0]);
+		return (127);
+	}
+	pid = fork();
 	if (pid < 0)
 	{
 		fprintf(stderr, "Fork failed\n");
@@ -22,12 +29,10 @@ int execute_command(char *args[], const char *shell_name, int command_count)
 		if (execvp(args[0], args) == -1)
 		{
 			fprintf(stderr, "%s: %d: %s: not found\n",
-			shell_name, command_count, args[0]);
-
+					shell_name, command_count, args[0]);
 			exit(EXIT_FAILURE);
 		}
 	}
-
 	else
 	{
 		wait(&status);
@@ -36,7 +41,8 @@ int execute_command(char *args[], const char *shell_name, int command_count)
 			return (WEXITSTATUS(status));
 		}
 	}
-	return (0);
+
+	return (status);
 }
 
 
@@ -45,8 +51,9 @@ int execute_command(char *args[], const char *shell_name, int command_count)
  * @args: array of arguments for the command
  * @shell_name: the name of the shell (e.g., "sh")
  * @command_count: the count of commands entered since shell execution
+ * Return: status value
  */
-void search_n_exec_cmd(char *args[], const char *shell_name, int command_count)
+int search_n_exec_cmd(char *args[], const char *shell_name, int command_count)
 {
 	char path[MAX_LENGTH], full_path[MAX_LENGTH];
 	char *path_token, *path_env;
@@ -71,7 +78,8 @@ void search_n_exec_cmd(char *args[], const char *shell_name, int command_count)
 	}
 
 	if (!found)
-		execute_command(args, shell_name, command_count);
+		return (execute_command(args, shell_name, command_count));
+	return (127);
 }
 
 /**
@@ -114,11 +122,10 @@ int main(void)
 		}
 
 		if (strchr(args[0], '/') == NULL)
-			search_n_exec_cmd(args, shell_name, command_count);
+			status = search_n_exec_cmd(args, shell_name, command_count);
 		else
 			status = execute_command(args, shell_name, command_count);
 	}
-
 	free(input);
-	return (0);
+	return (status);
 }
