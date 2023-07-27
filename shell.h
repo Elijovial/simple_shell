@@ -7,8 +7,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 
-#define MAX_LENGTH 1024
+#define MAX_LENGTH 1024 
 
 
 char *get_shell_name();

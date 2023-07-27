@@ -90,10 +90,10 @@ int search_n_exec_cmd(char *args[], const char *shell_name, int command_count)
 
 int main(void)
 {
-	char *input = NULL, *args[MAX_LENGTH];
+	char *input = NULL, *args[MAX_LENGTH] = {0};
 	size_t n = 0;
 	int command_count = 0, num_args, status = 0;
-	const char *shell_name = get_shell_name();
+	char *shell_name = get_shell_name();
 
 	while (1)
 	{

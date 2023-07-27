@@ -32,17 +32,27 @@ void handle_cd(char *args[], const char *shell_name, int command_count)
 {
 	const char *home_direct = getenv("HOME");
 
-	if (home_direct)
+	if (args [1] == NULL)
 	{
-		if (chdir(home_direct) != 0)
+
+		if (home_direct)
 		{
-			fprintf(stderr, "%s: %d: cd: can't cd to %s\n",
-					shell_name, command_count, home_direct);
+			if (chdir(home_direct) != 0)
+			{
+				fprintf(stderr, "%s: %d: cd: can't cd to %s\n",
+						shell_name, command_count, home_direct);
+			}
+		}
+
+		else
+		{	fprintf(stderr, "%s: %d: cd: no home sirectory set\n",                                         shell_name, command_count);
+
 		}
 	}
 
 	else
-	{
+	{		
+
 		if (chdir(args[1]) != 0)
 		{
 			fprintf(stderr, "%s: %d: cd: can't cd to %s\n",
