@@ -12,7 +12,7 @@ int execute_command(char *args[], const char *shell_name, int command_count)
 	pid_t pid;
 	int status;
 
-	if (access(args[0], F_OK != 0))
+	if (access(args[0], F_OK) != 0)
 	{
 		fprintf(stderr, "%s: %d: %s: not found\n",
 				shell_name, command_count, args[0]);
@@ -70,6 +70,7 @@ int search_n_exec_cmd(char *args[], const char *shell_name, int command_count)
 		strcat(full_path, args[0]);
 		if (access(full_path, X_OK) == 0)
 		{
+			args[0] = full_path;
 			found = 1;
 			execute_command(args, shell_name, command_count);
 			break;
