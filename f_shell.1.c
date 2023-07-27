@@ -39,11 +39,6 @@ void handle_cd(char *args[], const char *shell_name, int command_count)
 			fprintf(stderr, "%s: %d: cd: can't cd to %s\n",
 					shell_name, command_count, home_direct);
 		}
-		else
-		{
-			fprintf(stderr, "%s: %d: cd: HOME not set\n",
-					shell_name, command_count);
-		}
 	}
 
 	else
