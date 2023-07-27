@@ -10,6 +10,7 @@
 int execute_command(char *args[], const char *shell_name, int command_count)
 {
 	pid_t pid = fork();
+	int status;
 
 	if (pid < 0)
 	{
@@ -18,13 +19,23 @@ int execute_command(char *args[], const char *shell_name, int command_count)
 	}
 	else if (pid == 0)
 	{
-		execvp(args[0], args);
-		fprintf(stderr, "%s: %d: %s: not found\n",
-				shell_name, command_count, args[0]);
-		exit(EXIT_FAILURE);
+		if (execvp(args[0], args) == -1)
+		{
+			fprintf(stderr, "%s: %d: %s: not found\n",
+			shell_name, command_count, args[0]);
+
+			exit(EXIT_FAILURE);
+		}
 	}
+
 	else
-		wait(NULL);
+	{
+		wait(&status);
+		if (WIFEXITED(status))
+		{
+			return (WEXITSTATUS(status));
+		}
+	}
 	return (0);
 }
 
@@ -72,7 +83,7 @@ int main(void)
 {
 	char *input = NULL, *args[MAX_LENGTH];
 	size_t n = 0;
-	int command_count = 0, num_args;
+	int command_count = 0, num_args, status = 0;
 	const char *shell_name = get_shell_name();
 
 	while (1)
@@ -86,7 +97,7 @@ int main(void)
 			if (isatty(STDIN_FILENO) == 1)
 				printf("\n");
 			free(input);
-			exit(0);
+			exit(status);
 		}
 
 		input[strcspn(input, "\n")] = '\0';
@@ -105,7 +116,7 @@ int main(void)
 		if (strchr(args[0], '/') == NULL)
 			search_n_exec_cmd(args, shell_name, command_count);
 		else
-			execute_command(args, shell_name, command_count);
+			status = execute_command(args, shell_name, command_count);
 	}
 
 	free(input);
