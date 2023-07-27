@@ -1,1 +1,1 @@
-Simple Shell Project Creation
+Simple Shell
