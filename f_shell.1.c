@@ -30,35 +30,12 @@ int tokenize_input(char *input, char *args[])
  */
 void handle_cd(char *args[], const char *shell_name, int command_count)
 {
-	const char *home_direct = getenv("HOME");
-
-	if (args [1] == NULL)
-	{
-
-		if (home_direct)
-		{
-			if (chdir(home_direct) != 0)
-			{
-				fprintf(stderr, "%s: %d: cd: can't cd to %s\n",
-						shell_name, command_count, home_direct);
-			}
-		}
-
-		else
-		{	fprintf(stderr, "%s: %d: cd: no home sirectory set\n",                                         shell_name, command_count);
-
-		}
-	}
-
-	else
-	{		
-
-		if (chdir(args[1]) != 0)
-		{
-			fprintf(stderr, "%s: %d: cd: can't cd to %s\n",
-					shell_name, command_count, args[1]);
-		}
-	}
+	if (args[1] == NULL)
+		fprintf(stderr, "%s: %d: Usage: cd <directory>\n",
+				shell_name, command_count);
+	if (chdir(args[1]) != 0)
+		fprintf(stderr, "%s: %d: cd: can't cd to %s\n",
+				shell_name, command_count, args[1]);
 }
 
 
@@ -73,4 +50,32 @@ char *get_shell_name()
 
 	shell_name = getenv("_");
 	return (shell_name);
+}
+
+/**
+ * chK - checks if first arg is an environ
+ * @args: 2D array containing tokenized arguments
+ * @shell_name: name of shell executed
+ * @command_count: count of commands entered
+ * @status: variable storing last command exit status
+ * @input: stores the command inputted by users
+ * Return: exit status for present command
+ */
+
+int chK(char *args[], const char *shell_name, int command_count,
+int status, char *input)
+{
+
+	if (strcmp(args[0], "exit") == 0)
+		status = exiT(args, shell_name, command_count, status, input);
+	else if (strcmp(args[0], "env") == 0)
+		status = handle_env(shell_name, command_count);
+
+	else if (strcmp(args[0], "cd") == 0)
+		handle_cd(args, shell_name, command_count);
+
+	else
+		status = search_n_exec_cmd(args, shell_name, command_count);
+
+	return (status);
 }
