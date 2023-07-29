@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -30,5 +31,12 @@ int fork_strtok(char *input);
 int _print(const char *str);
 size_t _strlen(const char *str);
 int check_for_non_digit(const char *str);
+void print_cd_error(const char *error_type,
+const char *shell_name, int command_count);
+void change_directory_to_home(const char *shell_name, int command_count);
+void change_directory_to_previous(const char *shell_name, int command_count);
+void change_directory_to_specified(const char *directory,
+const char *shell_name, int command_count);
+void change_directory(char *args[], const char *shell_name, int command_count);
 
 #endif

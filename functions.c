@@ -18,3 +18,26 @@ int check_for_non_digit(const char *str)
 	return (0);
 
 }
+
+/**
+ * tokenize_input - function to tokenize user input
+ * @input: user input string
+ * @args: array to store the tokenized arguments
+ * Return: number of arguments tokenized
+ */
+int tokenize_input(char *input, char *args[])
+{
+	int i = 0;
+	char *token = strtok(input, " \t\n\r");
+
+	while (token != NULL)
+	{
+		args[i] = token;
+		i++;
+		token = strtok(NULL, " \t\n\r");
+	}
+	args[i] = NULL;
+
+	return (i);
+}
+
